@@ -1,0 +1,14 @@
+-- -- ~/.config/nvim/after/plugin/theme-overrides.lua
+-- -- Ghostty/WezTerm colors you shared
+-- local bg = "#0c0b0f"
+-- local acc = "#bea3c7"
+--
+-- -- Apply after the colorscheme so they “win”
+-- vim.api.nvim_set_hl(0, "Normal", { bg = bg }) -- main background
+-- vim.api.nvim_set_hl(0, "NormalNC", { bg = bg }) -- unfocused windows
+-- vim.api.nvim_set_hl(0, "SignColumn", { bg = bg })
+-- vim.api.nvim_set_hl(0, "LineNr", { fg = acc, bg = bg })
+-- vim.api.nvim_set_hl(0, "Cursor", { bg = acc, fg = bg })
+-- vim.api.nvim_set_hl(0, "StatusLine", { fg = acc, bg = bg })
+-- vim.api.nvim_set_hl(0, "VertSplit", { fg = acc, bg = bg })
+-- vim.api.nvim_set_hl(0, "WinSeparator", { fg = acc, bg = bg })

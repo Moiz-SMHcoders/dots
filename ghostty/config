@@ -1,0 +1,39 @@
+# Enable cursor trail via custom shader (nightly build required)
+custom-shader = "~/.config/ghostty/shaders/cursor_smear_fade.glsl"
+
+macos-titlebar-style = hidden
+# ~/.config/ghostty/config  (macOS)
+
+font-family = "JetBrains Mono"
+font-size = 23
+term = xterm-256color
+
+# Slightly narrower cells to mimic WezTerm cell_width = 0.9
+# (Ghostty expects an integer delta, not a percent.)
+adjust-cell-width = -1
+
+# Colors / look
+theme = Kanagawa Dragon
+
+# Transparency & blur (macOS supported)
+background-opacity = 1
+# background-blur = 40
+
+# Window chrome
+window-padding-x = 0
+window-padding-y = 0
+macos-titlebar-style = hidden
+
+# Cursor
+cursor-style = block
+cursor-style-blink = true
+
+# Keybinds
+keybind = ctrl+shift+alt+h=new_split:right
+keybind = ctrl+shift+alt+v=new_split:down
+keybind = ctrl+shift+u=resize_split:left,20
+keybind = ctrl+shift+i=resize_split:down,20
+keybind = ctrl+shift+o=resize_split:up,20
+keybind = ctrl+shift+p=resize_split:right,20
+# keybind = ctrl+l=inspector:toggle
+keybind = ctrl+enter=toggle_fullscreen

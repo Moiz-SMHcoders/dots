@@ -1,0 +1,21 @@
+{
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.1",
+  "schemes" : [
+    {
+      "if" : {
+        "device" : {
+          "category" : "trackpad",
+          "productID" : "0x0",
+          "productName" : "Apple Internal Keyboard \/ Trackpad",
+          "vendorID" : "0x0"
+        }
+      },
+      "pointer" : {
+        "acceleration" : 0.6875,
+        "disableAcceleration" : false,
+        "redirectsToScroll" : false,
+        "speed" : 0.0689655172413792768
+      }
+    }
+  ]
+}

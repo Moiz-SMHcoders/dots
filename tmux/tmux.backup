@@ -1,0 +1,44 @@
+set-environment -g PATH "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+
+set -g prefix C-b
+set -a terminal-features "tmux-256color:RGB"
+set-option -g terminal-overrides ',xterm-256color:RGB'
+
+set -g base-index 1
+set -g renumber-windows on
+set -g mode-keys vi
+set -g status-position top
+set -g status-justify absolute-centre
+set -g status-style "bg=default"
+set -g window-status-current-style "fg=blue bold"
+
+set -g status-interval 5
+set -g status-right '#{?client_prefix, _ ,}#(timew | awk "/^ *Total/ {print \$NF}") #[bg=green,fg=black,bold]#(timew | awk "/^ *Tracking/ {print \" \" \$NF \" \"}")#[bg=default]'
+set -g status-left "#S"
+
+bind-key -n M-BSpace send-keys C-w
+bind r source-file "~/.config/tmux/tmux.conf"
+bind G run "~/.config/scripts/open-github.sh"
+
+# bind g show-environment with lazygit
+bind g neww -n "git" -S lazygit
+# bind E show-environment -g
+bind e neww -S "nvim"
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'omerxx/tmux-sessionx'
+
+# I recommend using `o` if not already in use, for least key strokes when launching
+# set -g @sessionx-bind 'o'
+# bind o run-shell "/opt/homebrew/bin/bash /Users/sussy/.config/tmux/plugins/tmux-sessionx/scripts/sessionx.sh"
+bind o display-message "bound test"
+
+# bind o display-message "Hello from test bind!"
+# bind o run-shell "/opt/homebrew/bin/bash -lc '/Users/sussy/.config/tmux/plugins/tmux-sessionx/scripts/sessionx.sh; echo finished >> /tmp/sessionx-debug.log'"
+
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+set-environment -g TMUX_PLUGIN_MANAGER_PATH '~/.config/tmux/plugins'
+run '~/.config/tmux/plugins/tpm/tpm'

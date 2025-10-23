@@ -1,0 +1,40 @@
+{
+  "global": {
+    "ask_for_confirmation_before_quitting": true
+  },
+  "profiles": [
+    {
+      "name": "Default profile",
+      "selected": true,
+      "devices": [],
+      "simple_modifications": [
+        { "from": { "key_code": "caps_lock" }, "to": [ { "key_code": "left_control" } ] }
+      ],
+      "complex_modifications": {
+        "parameters": { "basic.simultaneous_threshold_milliseconds": 50 },
+        "rules": [
+          {
+            "description": "Ctrl+Y → Redo (Cmd+Shift+Z)",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": { "key_code": "y", "modifiers": { "mandatory": ["control"] } },
+                "to": [ { "key_code": "z", "modifiers": ["left_command","left_shift"] } ]
+              }
+            ]
+          },
+          {
+            "description": "Ctrl+[ → Escape",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": { "key_code": "open_bracket", "modifiers": { "mandatory": ["control"] } },
+                "to": [ { "key_code": "escape" } ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

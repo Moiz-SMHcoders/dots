@@ -1,0 +1,34 @@
+
+{
+  "title": "Terminal custom remaps: Ctrl+Y → Redo, Ctrl+[ → Escape",
+  "rules": [
+    {
+      "description": "Ctrl+Y triggers Redo (Cmd+Shift+Z)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "y",
+            "modifiers": { "mandatory": ["left_control"] }
+          },
+          "to": [
+            { "key_code": "z", "modifiers": ["left_command", "left_shift"] }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Ctrl+[ produces Escape",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "open_bracket",
+            "modifiers": { "mandatory": ["left_control"] }
+          },
+          "to": [ { "key_code": "escape" } ]
+        }
+      ]
+    }
+  ]
+}
