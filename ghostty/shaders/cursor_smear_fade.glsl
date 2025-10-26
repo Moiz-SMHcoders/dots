@@ -183,11 +183,12 @@ float ease(float x) {
 }
 
 /* -------------------- Color & trail tuning -------------------- */
-/* #bea3c7 ≈ (190,163,199)/255 → (0.745, 0.639, 0.780) */
-const vec4 CURSOR_COLOR     = vec4(0.784, 0.639, 0.427, 1.0); // gruvbox yellow
-const vec4 TRAIL_BASE      = CURSOR_COLOR;                     // trail matches cursor hue
-const float TRAIL_INTENSITY = 0.85;                            // trim global brightness
-const float DURATION        = 0.5;                             // seconds for trail fade
+/* ---- Rosé Pine (main) ---- */
+/* #ebbcba → (235,188,186)/255 = (0.922, 0.737, 0.729) */
+const vec4 CURSOR_COLOR     = vec4(0.922, 0.737, 0.729, 1.0);  // rose accent
+const vec4 TRAIL_BASE       = CURSOR_COLOR;
+const float TRAIL_INTENSITY = 0.88;    // gentle fade
+const float DURATION        = 0.55;
 
 // Optional subtle Zenburn tail tint (warm yellow). Uncomment to bias far trail slightly.
 // const vec3 TRAIL_TINT = vec3(0.941, 0.875, 0.686);          // #f0dfaf

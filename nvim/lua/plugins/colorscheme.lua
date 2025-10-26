@@ -1,40 +1,21 @@
 return {
   {
-    "rebelot/kanagawa.nvim",
-    name = "kanagawa",
+    "rose-pine/neovim",
+    name = "rose-pine",
     lazy = false,
     priority = 1000,
     opts = {
-      compile = false,
-      theme = "dragon", -- use the Dragon variant
-      transparent = false, -- solid background (no transparency)
-      dimInactive = false,
-      terminalColors = true,
-      background = {
-        dark = "dragon",
-        light = "lotus",
-      },
-      colors = {
-        theme = {
-          all = {
-            ui = {
-              bg_gutter = "none",
-            },
-          },
-        },
+      variant = "main",              -- main, moon, or dawn
+      dark_variant = "main",
+      dim_inactive_windows = false,
+      extend_background_behind_borders = true,
+      styles = {
+        transparency = true,        -- solid background
       },
     },
     config = function(_, opts)
-      require("kanagawa").setup(opts)
-      vim.cmd.colorscheme("kanagawa-dragon")
-
-      -- Keep normal backgrounds solid
-      for _, g in ipairs({
-        "Normal", "NormalNC", "NormalFloat", "FloatBorder", "SignColumn",
-        "StatusLine", "StatusLineNC", "WinSeparator",
-      }) do
-        vim.api.nvim_set_hl(0, g, { bg = "none" })
-      end
+      require("rose-pine").setup(opts)
+      vim.cmd.colorscheme("rose-pine")
     end,
   },
 }

@@ -13,11 +13,13 @@ term = xterm-256color
 adjust-cell-width = -1
 
 # Colors / look
-theme = Kanagawa Dragon
+theme = Rose Pine
+# theme = Kanagawa Dragon
+# theme = Catppuccin Mocha
 
 # Transparency & blur (macOS supported)
-background-opacity = 1
-# background-blur = 40
+background-opacity = 0.8
+# background-blur = 10
 
 # Window chrome
 window-padding-x = 0
