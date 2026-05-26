@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "Usage: wt <feature-name>"
+}
+
+if [[ $# -lt 1 ]]; then
+  usage
+  exit 1
+fi
+
+feature_name="$1"
+
+required_tools=(git tmux nvim opencode)
+for tool in "${required_tools[@]}"; do
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    echo "Missing required tool: $tool" >&2
+    exit 1
+  fi
+done
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+  echo "Not inside a git repository" >&2
+  exit 1
+}
+
+base_dir=$(dirname "$repo_root")
+worktree_path="$base_dir/$feature_name"
+
+get_branches() {
+  local branch
+
+  while IFS= read -r branch; do
+    [[ -n "$branch" ]] && echo "[local] $branch"
+  done < <(git for-each-ref --format='%(refname:short)' refs/heads)
+
+  while IFS= read -r branch; do
+    [[ -n "$branch" ]] && echo "[remote] $branch"
+  done < <(git for-each-ref --format='%(refname:short)' refs/remotes)
+}
+
+normalize_branch() {
+  echo "$1" | sed -E 's/^\[[^]]+\] //'
+}
+
+branch_choices=()
+raw_branches=()
+while IFS= read -r branch; do
+  [[ "$branch" == "[remote] HEAD" ]] && continue
+  [[ "$branch" == "[remote] origin/HEAD" ]] && continue
+  raw_branches+=("$branch")
+done < <(get_branches)
+
+prioritized_branches=()
+other_branches=()
+for branch in "${raw_branches[@]}"; do
+  normalized=$(normalize_branch "$branch")
+  case "$normalized" in
+    main|master|origin/main|origin/master)
+      prioritized_branches+=("$branch")
+      ;;
+    *)
+      other_branches+=("$branch")
+      ;;
+  esac
+done
+
+branch_choices=("${prioritized_branches[@]}" "${other_branches[@]}")
+
+if [[ ${#branch_choices[@]} -eq 0 ]]; then
+  echo "No branches found to use as a base" >&2
+  exit 1
+fi
+
+pick_branch() {
+  local selected=""
+
+  if [[ -n "${TMUX:-}" ]] && command -v fzf-tmux >/dev/null 2>&1; then
+    selected=$(printf '%s\n' "${branch_choices[@]}" | fzf-tmux -p 80%,60% --prompt="Base branch> " --header="Select base branch") || true
+  elif command -v fzf >/dev/null 2>&1; then
+    selected=$(printf '%s\n' "${branch_choices[@]}" | fzf --prompt="Base branch> " --height=40% --reverse --border) || true
+  else
+    echo "fzf not installed, using menu" >&2
+    while [[ -z "$selected" ]]; do
+      echo "Select base branch (press Enter for default):"
+      select choice in "${branch_choices[@]}"; do
+        if [[ -z "$choice" ]]; then
+          selected="${branch_choices[0]}"
+        else
+          selected="$choice"
+        fi
+        break
+      done
+      if [[ -z "$selected" ]]; then
+        selected="${branch_choices[0]}"
+      fi
+    done
+  fi
+
+  if [[ -z "$selected" ]]; then
+    echo "No branch selected" >&2
+    exit 1
+  fi
+
+  echo "$selected"
+}
+
+selected_branch=$(pick_branch)
+base_branch=$(normalize_branch "$selected_branch")
+
+if [[ ! -d "$worktree_path" ]]; then
+  mkdir -p "$(dirname "$worktree_path")"
+  git worktree add -b "$feature_name" "$worktree_path" "$base_branch"
+fi
+
+session_exists=false
+if tmux has-session -t "$feature_name" 2>/dev/null; then
+  session_exists=true
+fi
+
+if [[ "$session_exists" == false ]]; then
+  tmux new-session -d -s "$feature_name" -n editor -c "$worktree_path"
+  tmux send-keys -t "$feature_name":editor "nvim ." C-m
+  tmux new-window -t "$feature_name" -n agent -c "$worktree_path"
+  tmux send-keys -t "$feature_name":agent "opencode" C-m
+fi
+
+if [[ -n "${TMUX:-}" ]]; then
+  tmux switch-client -t "$feature_name"
+else
+  tmux attach -t "$feature_name"
+fi

@@ -10,7 +10,7 @@ return {
       dim_inactive_windows = false,
       extend_background_behind_borders = true,
       styles = {
-        transparency = true,        -- solid background
+        transparency = false,        -- solid background
       },
     },
     config = function(_, opts)
